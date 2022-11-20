@@ -33,6 +33,8 @@ public class DataLoader implements CommandLineRunner {
                 Arrays.asList(new Link("https://github.com/barisseckin"),
                         new Link("https://www.linkedin.com/in/barisseckin/")));
 
+        user.setActive(true);
+
         userRepository.save(user);
 
         Category category = new Category(
