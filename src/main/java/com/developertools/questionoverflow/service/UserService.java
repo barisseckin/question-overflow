@@ -10,6 +10,7 @@ import com.developertools.questionoverflow.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class UserService {
 
         if (verificationCodeService.verifyCode(user.getMail(), code)) {
             user.setActive(true);
+            user.setUpdateDate(LocalDateTime.now());
             verificationCodeService.deleteByUserMail(user.getMail());
         }
 
@@ -74,6 +76,18 @@ public class UserService {
 
     public UserDto getByUserMail(String mail) {
         return userDtoConverter.convertUserToUserDto(getByMail(mail));
+    }
+
+    public UserDto updateNotificationPermissionByMail(String mail, boolean permission) {
+        User fromDbUser = getByMail(mail);
+
+        if (fromDbUser.isActive()) {
+            fromDbUser.setNotificationPermission(permission);
+            fromDbUser.setUpdateDate(LocalDateTime.now());
+            return userDtoConverter.convertUserToUserDto(userRepository.save(fromDbUser));
+        }
+
+        throw new RuntimeException("");
     }
 
     protected User getByMail(String mail) {

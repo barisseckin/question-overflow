@@ -17,4 +17,5 @@ public class UserDto {
     private Set<String> links;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private boolean notificationPermission;
 }

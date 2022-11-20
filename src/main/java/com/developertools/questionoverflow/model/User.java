@@ -27,6 +27,7 @@ public class User extends BaseEntity{
     private List<LikedQuestion> publicIdOfLikedQuestions;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Link> links;
+    private boolean notificationPermission = true;
 
     public User(String username, String mail, String password, String urlToImage, List<Link> links) {
         this.username = username;

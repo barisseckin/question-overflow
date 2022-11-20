@@ -51,4 +51,11 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/update-notification-permission")
+    public ResponseEntity<UserDto> updateNotificationPermissionByMail(@RequestParam String mail,
+                                                                      @RequestParam boolean permission) {
+        return ResponseEntity
+                .ok(userService.updateNotificationPermissionByMail(mail, permission));
+    }
 }

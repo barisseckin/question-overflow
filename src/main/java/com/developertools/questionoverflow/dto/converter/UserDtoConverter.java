@@ -29,7 +29,8 @@ public class UserDtoConverter {
                 publicIdOfLikedQuestions,
                 links,
                 from.getCreateDate(),
-                from.getUpdateDate()
+                from.getUpdateDate(),
+                from.isNotificationPermission()
         );
     }
 
