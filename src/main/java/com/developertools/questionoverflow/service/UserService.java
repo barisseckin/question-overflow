@@ -4,6 +4,9 @@ import com.developertools.questionoverflow.dto.UserDto;
 import com.developertools.questionoverflow.dto.converter.UserDtoConverter;
 import com.developertools.questionoverflow.dto.request.CreateUserRequest;
 import com.developertools.questionoverflow.dto.request.SendMailRequest;
+import com.developertools.questionoverflow.exception.generic.NotFoundException;
+import com.developertools.questionoverflow.exception.user.UserExistException;
+import com.developertools.questionoverflow.exception.user.UserNotActiveException;
 import com.developertools.questionoverflow.model.Link;
 import com.developertools.questionoverflow.model.User;
 import com.developertools.questionoverflow.repository.UserRepository;
@@ -46,7 +49,11 @@ public class UserService {
                 links                           //TODO: bugfix
         );
 
-        return userDtoConverter.convertUserToUserDto(userRepository.save(savedUser));
+        if (!userRepository.existsByMail(savedUser.getMail())) {
+            return userDtoConverter.convertUserToUserDto(userRepository.save(savedUser));
+        }
+
+        throw new UserExistException("user exist, mail: " + savedUser.getMail());
     }
 
     public void sendActivateCode(String mail) {
@@ -95,11 +102,11 @@ public class UserService {
             return userDtoConverter.convertUserToUserDto(userRepository.save(fromDbUser));
         }
 
-        throw new RuntimeException("");
+        throw new UserNotActiveException("user not active, mail: " + mail);
     }
 
     protected User getByMail(String mail) {
         return userRepository.findUserByMail(mail)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new NotFoundException("user not found, mail: " + mail));
     }
 }

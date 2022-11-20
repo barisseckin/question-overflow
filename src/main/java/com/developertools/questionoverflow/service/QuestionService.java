@@ -3,6 +3,8 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.dto.QuestionDto;
 import com.developertools.questionoverflow.dto.converter.QuestionDtoConverter;
 import com.developertools.questionoverflow.dto.request.CreateQuestionRequest;
+import com.developertools.questionoverflow.exception.generic.NotFoundException;
+import com.developertools.questionoverflow.exception.user.UserNotActiveException;
 import com.developertools.questionoverflow.model.*;
 import com.developertools.questionoverflow.repository.QuestionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +57,7 @@ public class QuestionService {
             return questionDtoConverter.convertQuestionToQuestionDto(questionRepository.save(saved));
         }
 
-        throw new RuntimeException("");
+        throw new UserNotActiveException("user not active, mail: " + user.getMail());
     }
 
     public void delete(String publicId) {
@@ -85,6 +87,6 @@ public class QuestionService {
 
     protected Question getQuestionByPublicId(String publicId) {
         return questionRepository.findQuestionByPublicId(publicId)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new NotFoundException("question not found, publicId: " + publicId));
     }
 }

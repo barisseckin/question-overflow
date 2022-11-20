@@ -18,8 +18,9 @@ public class QuestionListService {
     private final UserService userService;
     private final CategoryService categoryService;
 
-    public QuestionListService(QuestionRepository questionRepository, QuestionDtoConverter questionDtoConverter,
-                           UserService userService, CategoryService categoryService) {
+    public QuestionListService(QuestionRepository questionRepository,
+                               QuestionDtoConverter questionDtoConverter,
+                               UserService userService, CategoryService categoryService) {
         this.questionRepository = questionRepository;
         this.questionDtoConverter = questionDtoConverter;
         this.userService = userService;

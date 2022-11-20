@@ -1,5 +1,6 @@
 package com.developertools.questionoverflow.service;
 
+import com.developertools.questionoverflow.exception.generic.NotFoundException;
 import com.developertools.questionoverflow.model.VerificationCode;
 import com.developertools.questionoverflow.repository.VerificationCodeRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class VerificationCodeService {
 
     protected VerificationCode getByUser(String userMail) {
         return verificationCodeRepository.findVerificationCodeByUserMail(userMail)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new NotFoundException("user not found, mail: " + userMail));
     }
 
     protected boolean verifyCode(String userMail, int code) {

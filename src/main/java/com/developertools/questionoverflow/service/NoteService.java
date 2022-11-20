@@ -3,6 +3,8 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.dto.NoteDto;
 import com.developertools.questionoverflow.dto.converter.NoteDtoConverter;
 import com.developertools.questionoverflow.dto.request.CreateNoteRequest;
+import com.developertools.questionoverflow.exception.generic.NotFoundException;
+import com.developertools.questionoverflow.exception.user.UserNotActiveException;
 import com.developertools.questionoverflow.model.Link;
 import com.developertools.questionoverflow.model.Note;
 import com.developertools.questionoverflow.model.User;
@@ -48,7 +50,7 @@ public class NoteService {
             return noteDtoConverter.convertNoteToNoteDto(noteRepository.save(saved));
         }
 
-        throw new RuntimeException("user deactive");
+        throw new UserNotActiveException("user not active, mail: " + user.getMail());
     }
 
     public void delete(String publicId) {
@@ -67,6 +69,6 @@ public class NoteService {
 
     private Note getNoteByPublicId(String publicId) {
         return noteRepository.findNoteByPublicId(publicId)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new NotFoundException("note not found, publicId: " + publicId));
     }
 }
