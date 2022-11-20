@@ -44,7 +44,11 @@ public class NoteService {
                 user
         );
 
-        return noteDtoConverter.convertNoteToNoteDto(noteRepository.save(saved));
+        if (user.isActive()) {
+            return noteDtoConverter.convertNoteToNoteDto(noteRepository.save(saved));
+        }
+
+        throw new RuntimeException("user deactive");
     }
 
     public void delete(String publicId) {

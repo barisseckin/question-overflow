@@ -44,4 +44,11 @@ public class UserController {
         return ResponseEntity
                 .ok(userService.getByUserMail(mail));
     }
+
+    @PostMapping("/send-activate-code")
+    public ResponseEntity<?> sendActivateCode(@RequestParam String mail) {
+        userService.sendActivateCode(mail);
+
+        return ResponseEntity.noContent().build();
+    }
 }

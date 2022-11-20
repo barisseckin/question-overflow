@@ -24,18 +24,18 @@ public class Question extends BaseEntity{
     private boolean isDone = false;
     private String publicId = UUID.randomUUID().toString();
     private int likedNumber = 0;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Link> urlToImages;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private Set<Link> tags;
+    private List<Link> tags;
     @OneToOne
     private Category category;
     @OneToOne
     private User user;
 
-    public Question(String title, String description, List<Link> urlToImages, Set<Link> tags,
+    public Question(String title, String description, List<Link> urlToImages, List<Link> tags,
                     Category category, User user) {
         this.title = title;
         this.description = description;

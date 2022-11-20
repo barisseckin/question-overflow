@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -47,14 +45,15 @@ public class UserService {
                 links                           //TODO: bugfix
         );
 
+        return userDtoConverter.convertUserToUserDto(userRepository.save(savedUser));
+    }
+
+    public void sendActivateCode(String mail) {
         int verificationCode = verificationCodeService.generateCode();
 
-        verificationCodeService.save(savedUser.getMail(), verificationCode);
+        verificationCodeService.save(mail, verificationCode);
 
-        mailService.send(new SendMailRequest("Your Verification Code", String.valueOf(verificationCode), savedUser.getMail()));
-
-
-        return userDtoConverter.convertUserToUserDto(userRepository.save(savedUser));
+        mailService.send(new SendMailRequest("Your Verification Code", String.valueOf(verificationCode), mail));
     }
 
     public UserDto activateUser(String userMail, int code) {
