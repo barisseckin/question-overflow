@@ -6,7 +6,6 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -29,13 +28,13 @@ public class Question extends BaseEntity{
     private List<Link> urlToImages;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<Link> tags;
+    private List<Tag> tags;
     @OneToOne
     private Category category;
     @OneToOne
     private User user;
 
-    public Question(String title, String description, List<Link> urlToImages, List<Link> tags,
+    public Question(String title, String description, List<Link> urlToImages, List<Tag> tags,
                     Category category, User user) {
         this.title = title;
         this.description = description;
