@@ -10,7 +10,9 @@ import com.developertools.questionoverflow.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -31,10 +33,11 @@ public class UserService {
     }
 
     public UserDto save(CreateUserRequest request) {
-        Link link = new Link(request.getLink());
+        List<Link> links = new ArrayList<>();
 
-        Set<Link> links = new HashSet<>();
-        links.add(link);
+        for (String link : request.getLinks()) {
+            links.add(new Link(link));
+        }
 
         User savedUser = new User(
                 request.getUsername(),
@@ -74,7 +77,7 @@ public class UserService {
         return userDtoConverter.convertUserToUserDto(getByMail(mail));
     }
 
-    private User getByMail(String mail) {
+    protected User getByMail(String mail) {
         return userRepository.findUserByMail(mail)
                 .orElseThrow(() -> new RuntimeException(""));
     }

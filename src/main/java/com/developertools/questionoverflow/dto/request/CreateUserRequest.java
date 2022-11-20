@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 public class CreateUserRequest {
@@ -14,5 +15,5 @@ public class CreateUserRequest {
     @NotBlank
     private String password;
     private String urlToImage;
-    private String link;
+    private List<String> links;
 }

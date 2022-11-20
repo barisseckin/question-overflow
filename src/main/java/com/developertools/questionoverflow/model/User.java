@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,12 +23,12 @@ public class User extends BaseEntity{
     private String password;
     private boolean isActive = false;
     private String urlToImage;
-    @OneToMany
-    private Set<LikedQuestion> publicIdOfLikedQuestions;
-    @OneToMany
-    private Set<Link> links;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<LikedQuestion> publicIdOfLikedQuestions;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Link> links;
 
-    public User(String username, String mail, String password, String urlToImage, Set<Link> links) {
+    public User(String username, String mail, String password, String urlToImage, List<Link> links) {
         this.username = username;
         this.mail = mail;
         this.password = password;
