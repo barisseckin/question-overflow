@@ -22,7 +22,7 @@ public class Comment extends BaseEntity{
     private int likedNumber = 0;
     private String publicId = UUID.randomUUID().toString();
     private boolean approved = false;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Link> urlToImages;
     @OneToOne
