@@ -11,7 +11,7 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @Entity
-public class Note {
+public class Note extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

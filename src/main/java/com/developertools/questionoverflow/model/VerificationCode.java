@@ -12,14 +12,16 @@ import javax.persistence.Id;
 @ToString
 @NoArgsConstructor
 @Entity
-public class LikedQuestion extends BaseEntity{
+public class VerificationCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String publicIdOfLikedQuestions;
+    private String userMail;
+    private int code;
 
-    public LikedQuestion(String publicIdOfLikedQuestions) {
-        this.publicIdOfLikedQuestions = publicIdOfLikedQuestions;
+    public VerificationCode(String userMail, int code) {
+        this.userMail = userMail;
+        this.code = code;
     }
 }

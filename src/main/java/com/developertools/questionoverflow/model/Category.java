@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @ToString
 @NoArgsConstructor
 @Entity
-public class Category {
+public class Category extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @ToString
 @NoArgsConstructor
 @Entity
-public class Link {
+public class Link extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

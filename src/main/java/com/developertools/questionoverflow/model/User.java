@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,4 +27,12 @@ public class User {
     private Set<LikedQuestion> publicIdOfLikedQuestions;
     @OneToMany
     private Set<Link> links;
+
+    public User(String username, String mail, String password, String urlToImage, Set<Link> links) {
+        this.username = username;
+        this.mail = mail;
+        this.password = password;
+        this.urlToImage = urlToImage;
+        this.links = links;
+    }
 }

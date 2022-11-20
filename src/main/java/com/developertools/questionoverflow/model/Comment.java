@@ -13,7 +13,7 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @Entity
-public class Comment {
+public class Comment extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
