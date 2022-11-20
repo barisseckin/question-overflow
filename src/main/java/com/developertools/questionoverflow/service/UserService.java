@@ -63,6 +63,10 @@ public class UserService {
         if (verificationCodeService.verifyCode(user.getMail(), code)) {
             user.setActive(true);
             user.setUpdateDate(LocalDateTime.now());
+            mailService.send(new SendMailRequest("Your Account Verified",
+                    "Hello, this e-mail has been sent automatically to " +
+                            "indicate that your account has been verified."
+                    ,user.getMail()));
             verificationCodeService.deleteByUserMail(user.getMail());
         }
 
@@ -72,6 +76,10 @@ public class UserService {
     public void deleteByMail(String mail) {
         User user = getByMail(mail);
         userRepository.deleteById(user.getId());
+        mailService.send(new SendMailRequest("Your Account Deleted",
+                "We are sorry that your account " +
+                        "has been deleted. hope to see you again",
+                user.getMail()));
     }
 
     public UserDto getByUserMail(String mail) {
