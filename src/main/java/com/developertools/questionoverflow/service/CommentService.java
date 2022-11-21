@@ -3,6 +3,7 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.dto.CommentDto;
 import com.developertools.questionoverflow.dto.converter.CommentDtoConverter;
 import com.developertools.questionoverflow.dto.request.CreateCommentRequest;
+import com.developertools.questionoverflow.dto.request.ReportRequest;
 import com.developertools.questionoverflow.dto.request.SendMailRequest;
 import com.developertools.questionoverflow.exception.generic.NotFoundException;
 import com.developertools.questionoverflow.exception.user.UserNotActiveException;
@@ -10,6 +11,7 @@ import com.developertools.questionoverflow.model.Comment;
 import com.developertools.questionoverflow.model.Link;
 import com.developertools.questionoverflow.model.Question;
 import com.developertools.questionoverflow.model.User;
+import com.developertools.questionoverflow.model.enums.ReportType;
 import com.developertools.questionoverflow.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,15 +29,17 @@ public class CommentService {
     private final QuestionService questionService;
     private final UserService userService;
     private final MailService mailService;
+    private final ReportService reportService;
 
     public CommentService(CommentRepository commentRepository, CommentDtoConverter commentDtoConverter,
                           QuestionService questionService, UserService userService,
-                          MailService mailService) {
+                          MailService mailService, ReportService reportService) {
         this.commentRepository = commentRepository;
         this.commentDtoConverter = commentDtoConverter;
         this.questionService = questionService;
         this.userService = userService;
         this.mailService = mailService;
+        this.reportService = reportService;
     }
 
     public CommentDto save(CreateCommentRequest request) {
@@ -88,10 +92,11 @@ public class CommentService {
         return commentDtoConverter.convertCommentToCommentDto(commentRepository.save(fromDbComment));
     }
 
-    public CommentDto reportComment(String publicId) {
-        Comment fromDbComment = getCommentByPublicId(publicId);
+    public CommentDto reportComment(ReportRequest request) {
+        Comment fromDbComment = getCommentByPublicId(request.getPublicId());
         fromDbComment.setReportNumber(fromDbComment.getReportNumber() + 1);
         userService.updateTotalReportNumberByMail(fromDbComment.getUser().getMail());
+        reportService.save(request, ReportType.COMMENT);
 
         if (fromDbComment.getReportNumber() >= 50) {
             commentRepository.deleteById(fromDbComment.getId());

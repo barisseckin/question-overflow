@@ -2,6 +2,7 @@ package com.developertools.questionoverflow.controller;
 
 import com.developertools.questionoverflow.dto.QuestionDto;
 import com.developertools.questionoverflow.dto.request.CreateQuestionRequest;
+import com.developertools.questionoverflow.dto.request.ReportRequest;
 import com.developertools.questionoverflow.service.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +52,8 @@ public class QuestionController {
     }
 
     @PatchMapping("/report")
-    public ResponseEntity<QuestionDto> reportQuestion(@RequestParam String publicId) {
+    public ResponseEntity<QuestionDto> reportQuestion(@RequestBody ReportRequest request) {
         return ResponseEntity
-                .ok(questionService.reportQuestion(publicId));
+                .ok(questionService.reportQuestion(request));
     }
 }

@@ -3,10 +3,12 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.dto.QuestionDto;
 import com.developertools.questionoverflow.dto.converter.QuestionDtoConverter;
 import com.developertools.questionoverflow.dto.request.CreateQuestionRequest;
+import com.developertools.questionoverflow.dto.request.ReportRequest;
 import com.developertools.questionoverflow.dto.request.SendMailRequest;
 import com.developertools.questionoverflow.exception.generic.NotFoundException;
 import com.developertools.questionoverflow.exception.user.UserNotActiveException;
 import com.developertools.questionoverflow.model.*;
+import com.developertools.questionoverflow.model.enums.ReportType;
 import com.developertools.questionoverflow.repository.QuestionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,15 +25,17 @@ public class QuestionService {
     private final UserService userService;
     private final CategoryService categoryService;
     private final MailService mailService;
+    private final ReportService reportService;
 
     public QuestionService(QuestionRepository questionRepository, QuestionDtoConverter questionDtoConverter,
                            UserService userService, CategoryService categoryService,
-                           MailService mailService) {
+                           MailService mailService, ReportService reportService) {
         this.questionRepository = questionRepository;
         this.questionDtoConverter = questionDtoConverter;
         this.userService = userService;
         this.categoryService = categoryService;
         this.mailService = mailService;
+        this.reportService = reportService;
     }
 
     public QuestionDto save(CreateQuestionRequest request) {
@@ -89,10 +93,11 @@ public class QuestionService {
         return questionDtoConverter.convertQuestionToQuestionDto(questionRepository.save(fromDbQuestion));
     }
 
-    public QuestionDto reportQuestion(String publicId) {
-        Question fromDbQuestion = getQuestionByPublicId(publicId);
+    public QuestionDto reportQuestion(ReportRequest request) {
+        Question fromDbQuestion = getQuestionByPublicId(request.getPublicId());
         fromDbQuestion.setReportNumber(fromDbQuestion.getReportNumber() + 1);
         userService.updateTotalReportNumberByMail(fromDbQuestion.getUser().getMail());
+        reportService.save(request, ReportType.QUESTION);
 
         if (fromDbQuestion.getReportNumber() >= 50) {
             questionRepository.deleteById(fromDbQuestion.getId());

@@ -109,7 +109,7 @@ public class UserService {
         User fromDbUser = getByMail(mail);
         fromDbUser.setTotalReportNumber(fromDbUser.getTotalReportNumber() + 1);
 
-        if (fromDbUser.getTotalReportNumber() >= 2) {
+        if (fromDbUser.getTotalReportNumber() >= 100) {
             fromDbUser.setActive(false);
 
             if (fromDbUser.isNotificationPermission()) {

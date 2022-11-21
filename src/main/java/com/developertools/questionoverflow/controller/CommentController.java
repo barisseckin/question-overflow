@@ -2,6 +2,7 @@ package com.developertools.questionoverflow.controller;
 
 import com.developertools.questionoverflow.dto.CommentDto;
 import com.developertools.questionoverflow.dto.request.CreateCommentRequest;
+import com.developertools.questionoverflow.dto.request.ReportRequest;
 import com.developertools.questionoverflow.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +52,8 @@ public class CommentController {
     }
 
     @PatchMapping("/report")
-    public ResponseEntity<CommentDto> reportComment(@RequestParam String publicId) {
+    public ResponseEntity<CommentDto> reportComment(@RequestBody ReportRequest request) {
         return ResponseEntity
-                .ok(commentService.reportComment(publicId));
+                .ok(commentService.reportComment(request));
     }
 }
