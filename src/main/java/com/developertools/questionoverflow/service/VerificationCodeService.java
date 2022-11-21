@@ -3,11 +3,11 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.exception.generic.NotFoundException;
 import com.developertools.questionoverflow.model.VerificationCode;
 import com.developertools.questionoverflow.repository.VerificationCodeRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
-@Service
+@Component
 public class VerificationCodeService {
 
     private final VerificationCodeRepository verificationCodeRepository;
