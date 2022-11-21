@@ -101,9 +101,12 @@ public class QuestionService {
 
         if (fromDbQuestion.getReportNumber() >= 50) {
             questionRepository.deleteById(fromDbQuestion.getId());
-            mailService.send(new SendMailRequest("Your Question Deleted!",
-                    "Your question was deleted because it was reported too much! Your deleted comment:"
-                            + fromDbQuestion.getTitle(), fromDbQuestion.getUser().getMail()));
+
+            if (fromDbQuestion.getUser().isNotificationPermission()) {
+                mailService.send(new SendMailRequest("Your Question Deleted!",
+                        "Your question was deleted because it was reported too much! Your deleted comment:"
+                                + fromDbQuestion.getTitle(), fromDbQuestion.getUser().getMail()));
+            }
         }
         else {
             return questionDtoConverter.convertQuestionToQuestionDto(questionRepository.save(fromDbQuestion));
