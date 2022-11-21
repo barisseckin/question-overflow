@@ -35,9 +35,9 @@ public class QuestionController {
     }
 
     @PatchMapping("/like")
-    public ResponseEntity<QuestionDto> likeQuestion(@RequestParam String publicId) {
+    public ResponseEntity<QuestionDto> likeQuestion(@RequestParam String publicId, @RequestParam String mail) {
         return ResponseEntity
-                .ok(questionService.likeQuestion(publicId));
+                .ok(questionService.likeQuestion(publicId, mail));
     }
 
     @PatchMapping("/dislike")

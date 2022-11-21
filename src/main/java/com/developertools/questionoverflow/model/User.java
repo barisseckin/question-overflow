@@ -23,7 +23,7 @@ public class User extends BaseEntity{
     private String password;
     private boolean isActive = false;
     private String urlToImage;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LikedQuestion> publicIdOfLikedQuestions;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Link> links;

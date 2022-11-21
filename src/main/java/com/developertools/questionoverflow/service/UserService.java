@@ -7,6 +7,7 @@ import com.developertools.questionoverflow.dto.request.SendMailRequest;
 import com.developertools.questionoverflow.exception.generic.NotFoundException;
 import com.developertools.questionoverflow.exception.user.UserExistException;
 import com.developertools.questionoverflow.exception.user.UserNotActiveException;
+import com.developertools.questionoverflow.model.LikedQuestion;
 import com.developertools.questionoverflow.model.Link;
 import com.developertools.questionoverflow.model.User;
 import com.developertools.questionoverflow.repository.UserRepository;
@@ -119,6 +120,16 @@ public class UserService {
             }
 
         }
+
+        userRepository.save(fromDbUser);
+    }
+
+    public void addPublicIdOfLikedQuestions(String publicId, String mail) {
+        User fromDbUser = getByMail(mail);
+        List<LikedQuestion> fromDbUserLikedQuestion = fromDbUser.getPublicIdOfLikedQuestions();
+        fromDbUserLikedQuestion.add(new LikedQuestion(publicId));
+
+        fromDbUser.setPublicIdOfLikedQuestions(fromDbUserLikedQuestion);
 
         userRepository.save(fromDbUser);
     }

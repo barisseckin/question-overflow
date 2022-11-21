@@ -72,7 +72,9 @@ public class QuestionService {
         questionRepository.deleteById(getQuestionByPublicId(publicId).getId());
     }
 
-    public QuestionDto likeQuestion(String publicId) {
+    public QuestionDto likeQuestion(String publicId, String userMail) {
+        userService.addPublicIdOfLikedQuestions(publicId, userMail);
+
         Question fromDbQuestion = getQuestionByPublicId(publicId);
         fromDbQuestion.setLikedNumber(fromDbQuestion.getLikedNumber() + 1);
 
