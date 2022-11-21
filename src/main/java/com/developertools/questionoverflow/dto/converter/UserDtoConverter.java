@@ -11,23 +11,14 @@ import java.util.stream.Collectors;
 public class UserDtoConverter {
 
     public UserDto convertUserToUserDto(User from) {
-        final Set<String> publicIdOfLikedQuestions = new HashSet<>();
-        final Set<String> links = new HashSet<>();
-
-        from.getPublicIdOfLikedQuestions()  //TODO: bugfix
-                .stream()
-                .map(likedQuestion -> publicIdOfLikedQuestions.add(likedQuestion.getPublicIdOfLikedQuestions()));
-        from.getLinks()
-                .stream()
-                .map(link -> links.add(link.getLink()));
 
         return new UserDto(
                 from.getUsername(),
                 from.getMail(),
                 from.isActive(),
                 from.getUrlToImage(),
-                publicIdOfLikedQuestions,
-                links,
+                from.getPublicIdOfLikedQuestions(),
+                from.getLinks(),
                 from.getCreateDate(),
                 from.getUpdateDate(),
                 from.isNotificationPermission(),

@@ -46,7 +46,7 @@ public class UserService {
                 request.getMail(),
                 request.getPassword(),
                 request.getUrlToImage(),
-                links                           //TODO: bugfix
+                links
         );
 
         if (!userRepository.existsByMail(savedUser.getMail())) {
