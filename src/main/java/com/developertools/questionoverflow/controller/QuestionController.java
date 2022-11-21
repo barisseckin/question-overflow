@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/api/question")
 public class QuestionController {
@@ -52,7 +54,7 @@ public class QuestionController {
     }
 
     @PatchMapping("/report")
-    public ResponseEntity<QuestionDto> reportQuestion(@RequestBody ReportRequest request) {
+    public ResponseEntity<QuestionDto> reportQuestion(@RequestBody @Valid ReportRequest request) {
         return ResponseEntity
                 .ok(questionService.reportQuestion(request));
     }

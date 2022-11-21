@@ -52,7 +52,7 @@ public class CommentController {
     }
 
     @PatchMapping("/report")
-    public ResponseEntity<CommentDto> reportComment(@RequestBody ReportRequest request) {
+    public ResponseEntity<CommentDto> reportComment(@RequestBody @Valid ReportRequest request) {
         return ResponseEntity
                 .ok(commentService.reportComment(request));
     }
