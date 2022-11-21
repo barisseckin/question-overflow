@@ -33,6 +33,7 @@ public class Question extends BaseEntity{
     private Category category;
     @OneToOne
     private User user;
+    private int reportNumber = 0;
 
     public Question(String title, String description, List<Link> urlToImages, List<Tag> tags,
                     Category category, User user) {

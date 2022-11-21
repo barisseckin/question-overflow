@@ -19,4 +19,5 @@ public class CommentDto {
     private UserDto user;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private int reportNumber;
 }

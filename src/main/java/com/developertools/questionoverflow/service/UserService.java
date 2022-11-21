@@ -105,6 +105,24 @@ public class UserService {
         throw new UserNotActiveException("user not active, mail: " + mail);
     }
 
+    public void updateTotalReportNumberByMail(String mail) {
+        User fromDbUser = getByMail(mail);
+        fromDbUser.setTotalReportNumber(fromDbUser.getTotalReportNumber() + 1);
+
+        if (fromDbUser.getTotalReportNumber() >= 2) {
+            fromDbUser.setActive(false);
+
+            if (fromDbUser.isNotificationPermission()) {
+                mailService.send(new SendMailRequest("Your Account Deactivated!",
+                        "Your account has been deactivate for review due to too many reports for your content!",
+                        fromDbUser.getMail()));
+            }
+
+        }
+
+        userRepository.save(fromDbUser);
+    }
+
     protected User getByMail(String mail) {
         return userRepository.findUserByMail(mail)
                 .orElseThrow(() -> new NotFoundException("user not found, mail: " + mail));

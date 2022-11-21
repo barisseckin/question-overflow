@@ -3,6 +3,7 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.dto.CommentDto;
 import com.developertools.questionoverflow.dto.converter.CommentDtoConverter;
 import com.developertools.questionoverflow.dto.request.CreateCommentRequest;
+import com.developertools.questionoverflow.dto.request.SendMailRequest;
 import com.developertools.questionoverflow.exception.generic.NotFoundException;
 import com.developertools.questionoverflow.exception.user.UserNotActiveException;
 import com.developertools.questionoverflow.model.Comment;
@@ -25,13 +26,16 @@ public class CommentService {
     private final CommentDtoConverter commentDtoConverter;
     private final QuestionService questionService;
     private final UserService userService;
+    private final MailService mailService;
 
     public CommentService(CommentRepository commentRepository, CommentDtoConverter commentDtoConverter,
-                          QuestionService questionService, UserService userService) {
+                          QuestionService questionService, UserService userService,
+                          MailService mailService) {
         this.commentRepository = commentRepository;
         this.commentDtoConverter = commentDtoConverter;
         this.questionService = questionService;
         this.userService = userService;
+        this.mailService = mailService;
     }
 
     public CommentDto save(CreateCommentRequest request) {
@@ -82,6 +86,28 @@ public class CommentService {
         fromDbComment.setUpdateDate(LocalDateTime.now());
 
         return commentDtoConverter.convertCommentToCommentDto(commentRepository.save(fromDbComment));
+    }
+
+    public CommentDto reportComment(String publicId) {
+        Comment fromDbComment = getCommentByPublicId(publicId);
+        fromDbComment.setReportNumber(fromDbComment.getReportNumber() + 1);
+        userService.updateTotalReportNumberByMail(fromDbComment.getUser().getMail());
+
+        if (fromDbComment.getReportNumber() >= 50) {
+            commentRepository.deleteById(fromDbComment.getId());
+
+            if (fromDbComment.getUser().isNotificationPermission()) {
+                mailService.send(new SendMailRequest("Your Comment Deleted!",
+                        "Your comment was deleted because it was reported too much! Your deleted comment: "
+                                + fromDbComment.getBody(), fromDbComment.getUser().getMail()));
+            }
+        }
+
+        else {
+            return commentDtoConverter.convertCommentToCommentDto(commentRepository.save(fromDbComment));
+        }
+
+        return null;
     }
 
     private Comment getCommentByPublicId(String publicId) {

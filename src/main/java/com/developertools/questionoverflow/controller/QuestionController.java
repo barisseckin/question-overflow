@@ -49,4 +49,10 @@ public class QuestionController {
         return ResponseEntity
                 .ok(questionService.updateIsDoneStatusByPublicId(publicId, isDone));
     }
+
+    @PatchMapping("/report")
+    public ResponseEntity<QuestionDto> reportQuestion(@RequestParam String publicId) {
+        return ResponseEntity
+                .ok(questionService.reportQuestion(publicId));
+    }
 }

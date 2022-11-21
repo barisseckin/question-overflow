@@ -3,6 +3,7 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.dto.QuestionDto;
 import com.developertools.questionoverflow.dto.converter.QuestionDtoConverter;
 import com.developertools.questionoverflow.dto.request.CreateQuestionRequest;
+import com.developertools.questionoverflow.dto.request.SendMailRequest;
 import com.developertools.questionoverflow.exception.generic.NotFoundException;
 import com.developertools.questionoverflow.exception.user.UserNotActiveException;
 import com.developertools.questionoverflow.model.*;
@@ -21,13 +22,16 @@ public class QuestionService {
     private final QuestionDtoConverter questionDtoConverter;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final MailService mailService;
 
     public QuestionService(QuestionRepository questionRepository, QuestionDtoConverter questionDtoConverter,
-                           UserService userService, CategoryService categoryService) {
+                           UserService userService, CategoryService categoryService,
+                           MailService mailService) {
         this.questionRepository = questionRepository;
         this.questionDtoConverter = questionDtoConverter;
         this.userService = userService;
         this.categoryService = categoryService;
+        this.mailService = mailService;
     }
 
     public QuestionDto save(CreateQuestionRequest request) {
@@ -83,6 +87,24 @@ public class QuestionService {
         fromDbQuestion.setDone(isDone);
 
         return questionDtoConverter.convertQuestionToQuestionDto(questionRepository.save(fromDbQuestion));
+    }
+
+    public QuestionDto reportQuestion(String publicId) {
+        Question fromDbQuestion = getQuestionByPublicId(publicId);
+        fromDbQuestion.setReportNumber(fromDbQuestion.getReportNumber() + 1);
+        userService.updateTotalReportNumberByMail(fromDbQuestion.getUser().getMail());
+
+        if (fromDbQuestion.getReportNumber() >= 50) {
+            questionRepository.deleteById(fromDbQuestion.getId());
+            mailService.send(new SendMailRequest("Your Question Deleted!",
+                    "Your question was deleted because it was reported too much! Your deleted comment:"
+                            + fromDbQuestion.getTitle(), fromDbQuestion.getUser().getMail()));
+        }
+        else {
+            return questionDtoConverter.convertQuestionToQuestionDto(questionRepository.save(fromDbQuestion));
+        }
+
+        return null;
     }
 
     protected Question getQuestionByPublicId(String publicId) {

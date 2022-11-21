@@ -18,4 +18,5 @@ public class UserDto {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
     private boolean notificationPermission;
+    private int totalReportNumber;
 }

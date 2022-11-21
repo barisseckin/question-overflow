@@ -31,7 +31,8 @@ public class QuestionDtoConverter {
                 categoryDtoConverter.convertCategoryToCategoryDto(from.getCategory()),
                 userDtoConverter.convertUserToUserDto(from.getUser()),
                 from.getCreateDate(),
-                from.getUpdateDate()
+                from.getUpdateDate(),
+                from.getReportNumber()
         );
     }
 

@@ -28,6 +28,7 @@ public class User extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Link> links;
     private boolean notificationPermission = true;
+    private int totalReportNumber = 0;
 
     public User(String username, String mail, String password, String urlToImage, List<Link> links) {
         this.username = username;

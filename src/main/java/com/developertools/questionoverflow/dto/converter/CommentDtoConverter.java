@@ -29,7 +29,8 @@ public class CommentDtoConverter {
                 questionDtoConverter.convertQuestionToQuestionDto(from.getQuestion()),
                 userDtoConverter.convertUserToUserDto(from.getUser()),
                 from.getCreateDate(),
-                from.getUpdateDate()
+                from.getUpdateDate(),
+                from.getReportNumber()
         );
     }
 

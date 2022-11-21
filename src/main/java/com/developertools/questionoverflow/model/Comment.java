@@ -29,6 +29,7 @@ public class Comment extends BaseEntity{
     private Question question;
     @OneToOne
     private User user;
+    private int reportNumber = 0;
 
     public Comment(String body, List<Link> urlToImages, Question question, User user) {
         this.body = body;

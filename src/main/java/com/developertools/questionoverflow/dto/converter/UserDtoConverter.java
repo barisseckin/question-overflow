@@ -14,7 +14,7 @@ public class UserDtoConverter {
         final Set<String> publicIdOfLikedQuestions = new HashSet<>();
         final Set<String> links = new HashSet<>();
 
-        from.getPublicIdOfLikedQuestions()
+        from.getPublicIdOfLikedQuestions()  //TODO: bugfix
                 .stream()
                 .map(likedQuestion -> publicIdOfLikedQuestions.add(likedQuestion.getPublicIdOfLikedQuestions()));
         from.getLinks()
@@ -30,7 +30,8 @@ public class UserDtoConverter {
                 links,
                 from.getCreateDate(),
                 from.getUpdateDate(),
-                from.isNotificationPermission()
+                from.isNotificationPermission(),
+                from.getTotalReportNumber()
         );
     }
 

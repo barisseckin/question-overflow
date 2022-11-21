@@ -49,4 +49,10 @@ public class CommentController {
         return ResponseEntity
                 .ok(commentService.approveComment(publicId));
     }
+
+    @PatchMapping("/report")
+    public ResponseEntity<CommentDto> reportComment(@RequestParam String publicId) {
+        return ResponseEntity
+                .ok(commentService.reportComment(publicId));
+    }
 }
