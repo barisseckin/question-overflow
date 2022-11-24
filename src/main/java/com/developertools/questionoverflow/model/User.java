@@ -1,16 +1,15 @@
 package com.developertools.questionoverflow.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor
 @Entity
 public class User extends BaseEntity{
@@ -24,11 +23,14 @@ public class User extends BaseEntity{
     private boolean isActive = false;
     private String urlToImage;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<LikedQuestion> publicIdOfLikedQuestions;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Link> links;
     private boolean notificationPermission = true;
     private int totalReportNumber = 0;
+    private LocalDateTime lastLoginDate;
 
     public User(String username, String mail, String password, String urlToImage, List<Link> links) {
         this.username = username;

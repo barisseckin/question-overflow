@@ -3,13 +3,10 @@ package com.developertools.questionoverflow.service;
 import com.developertools.questionoverflow.dto.QuestionDto;
 import com.developertools.questionoverflow.dto.converter.QuestionDtoConverter;
 import com.developertools.questionoverflow.model.Category;
-import com.developertools.questionoverflow.model.LikedQuestion;
-import com.developertools.questionoverflow.model.Question;
 import com.developertools.questionoverflow.model.User;
 import com.developertools.questionoverflow.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
