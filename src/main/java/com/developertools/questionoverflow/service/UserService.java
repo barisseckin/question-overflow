@@ -12,6 +12,7 @@ import com.developertools.questionoverflow.model.Link;
 import com.developertools.questionoverflow.model.User;
 import com.developertools.questionoverflow.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,13 +27,17 @@ public class UserService {
     private final UserDtoConverter userDtoConverter;
     private final MailService mailService;
     private final VerificationCodeService verificationCodeService;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter,
-                       MailService mailService, VerificationCodeService verificationCodeService) {
+                       MailService mailService,
+                       VerificationCodeService verificationCodeService,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userDtoConverter = userDtoConverter;
         this.mailService = mailService;
         this.verificationCodeService = verificationCodeService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDto save(CreateUserRequest request) {
@@ -45,16 +50,20 @@ public class UserService {
         User savedUser = new User(
                 request.getUsername(),
                 request.getMail(),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 request.getUrlToImage(),
-                links
+                links,
+                request.getRole()
         );
 
-        if (!userRepository.existsByMail(savedUser.getMail())) {
+        if (!userRepository.existsByMail(savedUser.getMail()) &&
+                !userRepository.existsByUsername(savedUser.getUsername())) {
+
             return userDtoConverter.convertUserToUserDto(userRepository.save(savedUser));
         }
 
-        throw new UserExistException("user exist, mail: " + savedUser.getMail());
+        throw new UserExistException("user exist, mail: " + savedUser.getMail()
+                + " username: " + savedUser.getUsername());
     }
 
     public void sendActivateCode(String mail) {
@@ -134,8 +143,17 @@ public class UserService {
         userRepository.save(fromDbUser);
     }
 
+    public UserDto getUserByUsername(String username) {
+        return userDtoConverter.convertUserToUserDto(getByUsername(username));
+    }
+
     protected User getByMail(String mail) {
         return userRepository.findUserByMail(mail)
                 .orElseThrow(() -> new NotFoundException("user not found, mail: " + mail));
+    }
+
+    protected User getByUsername(String username) {
+        return userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new NotFoundException("user not found, username: " + username));
     }
 }

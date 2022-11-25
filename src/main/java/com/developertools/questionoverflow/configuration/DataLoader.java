@@ -3,6 +3,7 @@ package com.developertools.questionoverflow.configuration;
 import com.developertools.questionoverflow.model.Category;
 import com.developertools.questionoverflow.model.Link;
 import com.developertools.questionoverflow.model.User;
+import com.developertools.questionoverflow.model.enums.UserRole;
 import com.developertools.questionoverflow.repository.CategoryRepository;
 import com.developertools.questionoverflow.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -31,7 +32,8 @@ public class DataLoader implements CommandLineRunner {
                 "12345",
                 "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
                 Arrays.asList(new Link("https://github.com/barisseckin"),
-                        new Link("https://www.linkedin.com/in/barisseckin/")));
+                        new Link("https://www.linkedin.com/in/barisseckin/")),
+                UserRole.ADMIN);
 
         user.setActive(true);
 

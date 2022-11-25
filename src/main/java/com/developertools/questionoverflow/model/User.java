@@ -1,5 +1,6 @@
 package com.developertools.questionoverflow.model;
 
+import com.developertools.questionoverflow.model.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,12 +32,16 @@ public class User extends BaseEntity{
     private boolean notificationPermission = true;
     private int totalReportNumber = 0;
     private LocalDateTime lastLoginDate;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
-    public User(String username, String mail, String password, String urlToImage, List<Link> links) {
+    public User(String username, String mail, String password, String urlToImage,
+                List<Link> links, UserRole role) {
         this.username = username;
         this.mail = mail;
         this.password = password;
         this.urlToImage = urlToImage;
         this.links = links;
+        this.role = role;
     }
 }
