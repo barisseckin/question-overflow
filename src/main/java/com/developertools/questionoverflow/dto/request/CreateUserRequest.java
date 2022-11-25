@@ -1,5 +1,6 @@
 package com.developertools.questionoverflow.dto.request;
 
+import com.developertools.questionoverflow.model.enums.UserRole;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -16,4 +17,5 @@ public class CreateUserRequest {
     private String password;
     private String urlToImage;
     private List<String> links;
+    private UserRole role;
 }
