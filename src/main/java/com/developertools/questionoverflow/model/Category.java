@@ -11,6 +11,7 @@ import javax.persistence.Id;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Category extends BaseEntity{
 
