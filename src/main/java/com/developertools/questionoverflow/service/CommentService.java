@@ -13,6 +13,7 @@ import com.developertools.questionoverflow.model.Question;
 import com.developertools.questionoverflow.model.User;
 import com.developertools.questionoverflow.model.enums.ReportType;
 import com.developertools.questionoverflow.repository.CommentRepository;
+import com.developertools.questionoverflow.utils.log.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -30,16 +31,18 @@ public class CommentService {
     private final UserService userService;
     private final MailService mailService;
     private final ReportService reportService;
+    private final LogService logService;
 
     public CommentService(CommentRepository commentRepository, CommentDtoConverter commentDtoConverter,
                           QuestionService questionService, UserService userService,
-                          MailService mailService, ReportService reportService) {
+                          MailService mailService, ReportService reportService, LogService logService) {
         this.commentRepository = commentRepository;
         this.commentDtoConverter = commentDtoConverter;
         this.questionService = questionService;
         this.userService = userService;
         this.mailService = mailService;
         this.reportService = reportService;
+        this.logService = logService;
     }
 
     public CommentDto save(CreateCommentRequest request) {
@@ -106,6 +109,8 @@ public class CommentService {
                         "Your comment was deleted because it was reported too much! Your deleted comment: "
                                 + fromDbComment.getBody(), fromDbComment.getUser().getMail()));
             }
+
+            logService.save(request + " comment deleted");
         }
 
         else {

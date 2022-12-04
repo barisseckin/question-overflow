@@ -11,6 +11,7 @@ import com.developertools.questionoverflow.model.LikedQuestion;
 import com.developertools.questionoverflow.model.Link;
 import com.developertools.questionoverflow.model.User;
 import com.developertools.questionoverflow.repository.UserRepository;
+import com.developertools.questionoverflow.utils.log.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +27,17 @@ public class UserService {
     private final UserDtoConverter userDtoConverter;
     private final MailService mailService;
     private final VerificationCodeService verificationCodeService;
+    private final LogService logService;
 
     public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter,
-                       MailService mailService, VerificationCodeService verificationCodeService) {
+                       MailService mailService,
+                       VerificationCodeService verificationCodeService,
+                       LogService logService) {
         this.userRepository = userRepository;
         this.userDtoConverter = userDtoConverter;
         this.mailService = mailService;
         this.verificationCodeService = verificationCodeService;
+        this.logService = logService;
     }
 
     public UserDto save(CreateUserRequest request) {
@@ -88,6 +93,8 @@ public class UserService {
                 "We are sorry that your account " +
                         "has been deleted. hope to see you again",
                 user.getMail()));
+
+        logService.save(mail + " user deleted");
     }
 
     public UserDto getByUserMail(String mail) {
@@ -119,6 +126,7 @@ public class UserService {
                         fromDbUser.getMail()));
             }
 
+            logService.save(mail + " user deactivated");
         }
 
         userRepository.save(fromDbUser);

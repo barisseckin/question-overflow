@@ -10,6 +10,7 @@ import com.developertools.questionoverflow.exception.user.UserNotActiveException
 import com.developertools.questionoverflow.model.*;
 import com.developertools.questionoverflow.model.enums.ReportType;
 import com.developertools.questionoverflow.repository.QuestionRepository;
+import com.developertools.questionoverflow.utils.log.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +27,18 @@ public class QuestionService {
     private final CategoryService categoryService;
     private final MailService mailService;
     private final ReportService reportService;
+    private final LogService logService;
 
     public QuestionService(QuestionRepository questionRepository, QuestionDtoConverter questionDtoConverter,
                            UserService userService, CategoryService categoryService,
-                           MailService mailService, ReportService reportService) {
+                           MailService mailService, ReportService reportService, LogService logService) {
         this.questionRepository = questionRepository;
         this.questionDtoConverter = questionDtoConverter;
         this.userService = userService;
         this.categoryService = categoryService;
         this.mailService = mailService;
         this.reportService = reportService;
+        this.logService = logService;
     }
 
     public QuestionDto save(CreateQuestionRequest request) {
@@ -109,6 +112,8 @@ public class QuestionService {
                         "Your question was deleted because it was reported too much! Your deleted comment:"
                                 + fromDbQuestion.getTitle(), fromDbQuestion.getUser().getMail()));
             }
+
+            logService.save(request + " question deleted");
         }
         else {
             return questionDtoConverter.convertQuestionToQuestionDto(questionRepository.save(fromDbQuestion));
