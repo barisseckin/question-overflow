@@ -12,6 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/api/question")
+@CrossOrigin
 public class QuestionController {
 
     private final QuestionService questionService;

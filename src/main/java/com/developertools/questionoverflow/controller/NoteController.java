@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/note")
+@CrossOrigin
 public class NoteController {
 
     private final NoteService noteService;

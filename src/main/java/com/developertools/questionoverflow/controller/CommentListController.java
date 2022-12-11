@@ -3,15 +3,13 @@ package com.developertools.questionoverflow.controller;
 import com.developertools.questionoverflow.dto.CommentDto;
 import com.developertools.questionoverflow.service.CommentListService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/comment/list")
+@CrossOrigin
 public class CommentListController {
 
     private final CommentListService commentListService;

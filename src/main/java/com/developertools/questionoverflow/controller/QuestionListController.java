@@ -3,15 +3,13 @@ package com.developertools.questionoverflow.controller;
 import com.developertools.questionoverflow.dto.QuestionDto;
 import com.developertools.questionoverflow.service.QuestionListService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/question/list")
+@CrossOrigin
 public class QuestionListController {
 
     private final QuestionListService questionListService;
