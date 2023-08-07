@@ -1,6 +1,8 @@
 package com.developertools.questionoverflow.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 @ToString
 @MappedSuperclass
 public abstract class BaseEntity {
-    private LocalDateTime createDate = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime createDate;
+    @UpdateTimestamp
     private LocalDateTime updateDate;
 }
