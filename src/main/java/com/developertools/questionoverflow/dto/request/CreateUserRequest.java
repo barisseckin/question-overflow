@@ -1,6 +1,7 @@
 package com.developertools.questionoverflow.dto.request;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
